@@ -643,7 +643,7 @@ public class Music {
                case 6: {
                      player.home = player.home.sortBySinger();
                      System.out.println("-------------------------------");
-                     System.out.printf("| %-25s | %-20s |\n", "Song Name", "Singer");
+                     System.out.printf("| %-25s | %-20s |\n", "Song Name", "Singers");
 
                      System.out.println("-------------------------------");
                      player.home.displaySingersOnly(); // Display song names and singers
@@ -654,7 +654,7 @@ public class Music {
                 case 7: {
                      player.home = player.home.sortByDuration();
                      System.out.println("-------------------------------");
-                     System.out.printf("| %-25s | %-10s |\n", "Song Name", "Duration");
+                     System.out.printf("| %-25s | %-10s |\n", "Song Name", "Durations");
                      System.out.println("-------------------------------");
                      player.home.displayDurationsOnly(); // Display song names and durations
                      System.out.println("-------------------------------");
