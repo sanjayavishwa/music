@@ -14,6 +14,8 @@ public class Music {
        // Map to track play counts by date
     Map<String, Map<LocalDate, Integer>> playCountByDate = new HashMap<>();
     Map<String, List<SongNode>> moodBasedSongs = new HashMap<>();
+    // O(1) Search Index for instant retrieval
+    Map<String, SongNode> fastSearchIndex = new HashMap<>();
     private String nextSongName;
     private int repeatCount;
     private final Playlist favorites = new Playlist();
@@ -65,6 +67,7 @@ public class Music {
     moodBasedSongs.get(mood).add(home.tail);
     // Add the song to the favorites playlist
     favorites.insertLast(name, singer, duration, lyrics);
+    fastSearchIndex.put(name.toLowerCase(), home.tail);
 }
     // Method to recommend songs based on play count
     void recommendSongs() {
@@ -324,9 +327,20 @@ public class Music {
     }
     System.out.println("-------------------------------");
     }
-    
 
-    
+    // O(1) Instant Search Method
+    public void fastSearchByName(String songName) {
+        System.out.println("-------------------------------");
+        SongNode foundSong = fastSearchIndex.get(songName.toLowerCase());
+
+        if (foundSong != null) {
+            System.out.println("| Fast Search Found: " + foundSong.name + " by " + foundSong.singer);
+            System.out.println("| Duration: " + foundSong.duration + " seconds");
+        } else {
+            System.out.println("| Song not found in the library.");
+        }
+        System.out.println("-------------------------------");
+    }
 
     // Main method
     public static void main(String[] args) {
@@ -492,7 +506,18 @@ public class Music {
                 case 12: {
                     System.out.print("Enter song name, singer, or lyrics to search: ");
                     String query = scanner.nextLine();
-                    player.searchSong(query);
+
+                    if (player.fastSearchIndex.containsKey(query.toLowerCase())) {
+                        System.out.println("-------------------------------");
+                        System.out.println("| [Optimized O(1), Search by song name Used]");
+                        // Call O(1) Hash Map search!
+                        player.fastSearchByName(query);
+                    }
+                    else {
+                        System.out.println("-------------------------------");
+                        System.out.println("| [O(N) Deep Search Used]      ");
+                        player.searchSong(query);
+                    }
                     break;
                 }
                 case 13: {
